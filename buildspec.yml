@@ -2,28 +2,20 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      nodejs: 18
     commands:
-      - echo "Installing dependencies..."
-      - npm install -g npm@7
-      - npm install
-
+      - echo Installing dependency...
+      - npm install -g next
+      - yarn
   pre_build:
     commands:
-      - echo "Building the Next.js app..."
-      - npm run build
-
+      - printenv > .env
   build:
     commands:
-      - echo "Exporting the Next.js app for static hosting..."
-      - npm run export
-
+      - echo Compiling the Node.js code
+      - yarn build
   post_build:
     commands:
-      - echo "Deployment completed!"
-
+      - echo Build completed on `date`
 artifacts:
-  base-directory: out
   files:
     - '**/*'
