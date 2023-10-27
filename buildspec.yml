@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+    install:
+      runtime-versions:
+        nodejs: 18
+      commands:
+        - apt-get install -y yarn 
+        - echo yarn -v
+    pre_build:
+      commands:
+        - echo Installing NPM dependencies 
+        - yarn global add typescript@4.4.3
+        - yarn install
+    build: 
+      commands: 
+        - yarn run build
+        - echo Compiling Node.js source code
+        - echo Distributing to elasticbeanstalk 
+artifacts:
+    type: zip
+    files:
+        - '**/*'        
+        - .next/*
+        - pages/*
+        - public/*
+        - styles/*
+cache:
+  paths:
+    - './node_modules/**/*'
