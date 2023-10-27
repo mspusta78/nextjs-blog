@@ -1,30 +1,29 @@
 version: 0.2
 
 phases:
-    install:
-      runtime-versions:
-        nodejs: 18
-      commands:
-        - apt-get install -y yarn 
-        - echo yarn -v
-    pre_build:
-      commands:
-        - echo Installing NPM dependencies 
-        - yarn global add typescript@4.4.3
-        - yarn install
-    build: 
-      commands: 
-        - yarn run build
-        - echo Compiling Node.js source code
-        - echo Distributing to elasticbeanstalk 
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies..."
+      - npm install -g npm@7
+      - npm install
+
+  pre_build:
+    commands:
+      - echo "Building the Next.js app..."
+      - npm run build
+
+  build:
+    commands:
+      - echo "Exporting the Next.js app for static hosting..."
+      - npm run export
+
+  post_build:
+    commands:
+      - echo "Deployment completed!"
+
 artifacts:
-    type: zip
-    files:
-        - '**/*'        
-        - .next/*
-        - pages/*
-        - public/*
-        - styles/*
-cache:
-  paths:
-    - './node_modules/**/*'
+  base-directory: out
+  files:
+    - '**/*'
